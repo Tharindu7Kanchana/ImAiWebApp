@@ -5,7 +5,7 @@ import Footer from '@components/Footer'
 import { useEffect, useState } from 'react'
 import { StyledContainer, Text } from '@nextui-org/react'
 
-export default function Success({query}) {
+export default function Success() {
 
   return (
     <div className="container">
@@ -17,12 +17,6 @@ export default function Success({query}) {
       <main>
         <h1>Submission Received!</h1>
       </main>
-
-      <StyledContainer>
-        <Text>Catagory : {res.label}</Text>
-        <Text>Spam Probability: {res.spam_probability}</Text>
-
-      </StyledContainer>
 
       <Footer />
     </div>
