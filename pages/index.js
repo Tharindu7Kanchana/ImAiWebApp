@@ -8,16 +8,15 @@ export default function Home() {
   return (
     <div className="container">
       <Head>
-        <title>Next.js Toolbox</title>
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/imaicon.png" />
+        <title>ImAI AI ToolKit</title>
       </Head>
 
       <main>
-        <Header title="Next.js Toolbox" />
+        <Header title="ImAI AI ToolKit" />
         <hr />
         <p className="description">
-          Here's an example of a Netlify Form! When you fill this out, the
-          submissions can be found in the Netlify Admin site.
+          Type is your spam text, check if it is spam or ham using the power of Machine Learning
         </p>
         <FeedbackForm />
         <JokeBlock />

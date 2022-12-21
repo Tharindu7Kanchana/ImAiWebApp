@@ -1,31 +1,64 @@
-import styles from './FeedbackForm.module.css'
+import { StyledContainer, Text } from "@nextui-org/react";
+import styles from "./FeedbackForm.module.css";
+import { useState, useEffect } from "react";
+import spamApi from "services/spam.api";
 
 export default function FeedbackForm() {
+  const [res, setRes] = useState({ label: "", spam_probability: 0 });
+  const [query, setQuery] = useState("");
+  const [show, setShow] = useState(false);
+
+  const checkSpam = (query) => {
+    spamApi
+      .checkIfSpamOrHam(query)
+      .then((res) => {
+        setRes(res.data);
+        setShow(true);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+
+  function onSubmitForm(event) {
+    event.preventDefault();
+    checkSpam(query);
+    console.log(query);
+  }
+
   return (
+    <>
+    <h2>Spam Detector</h2>
       <form
         className={styles.form}
-        data-netlify="true"
-        data-netlify-honeypot="bot-field"
         name="feedback"
         method="POST"
-        action="/success"
+        onSubmit={onSubmitForm}
       >
-        <input type="hidden" name="form-name" value="feedback" />
-        <p className={styles.hidden}>
-            <label>
-            Don’t fill this out if you’re human: <input name="bot-field" />
-            </label>
-        </p>
-  
-        <label htmlFor="name">Name</label>
-        <input id="name" className={styles['form-field']} type="text" name="name" />
+        <input type="hidden" name="form-name" value="Spam Text" />
 
-        <label htmlFor="email">Email</label>
-        <input id="email" className={styles['form-field']} type="email" name="email" required />
-
-        <label htmlFor="feedback">What is your feedback?</label>
-        <textarea id="feedback" className={styles['form-field']} wrap="soft" name="feedback" required></textarea>
-        <button className={styles.button} type="submit">Submit</button>
+        <label htmlFor="feedback">Enter your spam text</label>
+        <textarea
+          id="feedback"
+          className={styles["form-field"]}
+          wrap="soft"
+          name="spam"
+          required
+          onChange={(e) => {
+            setQuery(e.target.value);
+          }}
+        ></textarea>
+        <button className={styles.button} type="submit">
+          Check
+        </button>
       </form>
-  )
+      {show && (
+        <StyledContainer>
+          <Text>Spam Text: {query}</Text>
+          <Text>Catagory : {res.label}</Text>
+          <Text>Spam Probability: {res.spam_probability}</Text>
+        </StyledContainer>
+      )}
+    </>
+  );
 }
